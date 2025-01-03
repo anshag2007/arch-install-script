@@ -13,22 +13,18 @@ passwd
 bootctl install
 
 uuid=$(blkid -s UUID -o value "$rootpart")
-cat <<EOF > /boot/EFI/loader/entries/arch.conf
-title   Arch Linux
-linux   /vmlinuz-linux-zen
-initrd  /initramfs-linux-zen.img
-options root=UUID=$uuid rw
-EOF
+echo "title    Arch" > /boot/EFI/loader/entries/arch.conf
+echo "linux   /vmlinuz-linux-zen" >> /boot/EFI/loader/entries/arch.conf
+echo "initrd  /initramfs-linux-zen.img" >> /boot/EFI/loader/entries/arch.conf 
+echo "options root=UUID=$uuid rw" >> /boot/EFI/loader/entries/arch.conf
 
 echo "Enter your username: "
 read usern
 useradd -m $usern
 passwd $usern
 echo "$usern ALL=(ALL:ALL) ALL" >> /etc/sudoers
-echo <<EOF >> /etc/pacman.conf
-[multilib]
-Include = /etc/pacman.d/mirrorlist
-EOF
+echo "[multilib]" >> /etc/pacman.conf
+echo "Include = /etc/pacman.d/mirrorlist" >> /etc/pacman.conf
 
 pacman -Syy
 
