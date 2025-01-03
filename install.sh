@@ -8,55 +8,18 @@ pacman -Syy
 
 echo "Enter the parition to be used for root (/) [ex: /dev/sda2]:"
 read rootpart 
-echo -n "The following parition will be formatted, are you sure you want to proceed? [y/n] "
-read conf
-n = 0
-while [ n -ne 1 ]
-do
-if [ $conf == "y" ] 
-then 
-    mkfs.ext4 $rootpart
-    n = 1
-elif [ $conf == "n" ]
-then
-    echo -n "operation cancelled"
-    n = 0
-    exit
-else 
-    echo "not a valid choice"
-    n = 0
-fi
-done 
-
+mkfs.ext4 $rootpart
 echo "Enter the parition to be used for boot (/boot) [ex: /dev/sda1]:"
 read bootpart 
-echo -n "Would you like to leave the parition as is (any) or format it? (f): "
-read conf
-if [ $conf == "f" ] 
-then 
-    mkfs.fat -F 32 $bootpart
-fi
+mkfs.fat -F 32 $bootpart
 
-echo "Would you like to enable swap? [y/n]: "
-read conf
-if [ $conf == "y" ]
-then
-    echo "Specify the swap parition: "
-    read swappart
-    mkswap $swappart
-    sp = 1
-else
-    echo -n "No swap selected"
-    sp = 0
-fi
+echo "Specify the swap parition: "
+read swappart
+mkswap $swappart
 
 mount $rootpart /mnt
 mount $bootpart --mkdir /mnt/boot
-if [ $sp == 1 ]
-then
     swapon $swappart
-fi
-
 pacstrap -K /mnt base linux-zen linux-firmware intel-ucode neovim man-db man-pages texinfo networkmanager sudo fish kitty nano
 genfstab -U /mnt >> /mnt/etc/fstab
 arch-chroot /mnt
