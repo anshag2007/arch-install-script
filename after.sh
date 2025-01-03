@@ -25,18 +25,13 @@ read usern
 useradd -m $usern
 passwd $usern
 echo "$usern ALL=(ALL:ALL) ALL" >> /etc/sudoers
-echo "Enable multilib? [y/any]: "
-read ext
-if [ $ext == "y" ]
-then
 echo <<EOF >> /etc/pacman.conf
 [multilib]
 Include = /etc/pacman.d/mirrorlist
 EOF
-fi
 
 pacman -Syy
 
-pacman -S --needed --noconfirm xorg i3 xdg-users-dir alsa-utils brightnessctl fastfetch feh firefox flameshot fzf git github-cli gparted gtk-layer-shell gvfs gvfs-mtp htop jdk-openjdk luarocks lxappearance ly mpv mpd ncmpcpp mpc mate-polkit networkmanager-openvpn network-manager-applet nodejs npm obs-studio pacman-contrib pavucontrol picom playerctl pipewire pulseaudio python-pip qemu-full ripgrep thunar tree tmux ttf-hanazono virt-manager vlc wine-gecko wine-mono wine-staging xclip xfce4-notifyd xfce4-power-manager yt-dlp
+pacman -S --needed --noconfirm xorg i3 xdg-user-dirs alsa-utils brightnessctl fastfetch feh firefox flameshot fzf git github-cli gparted gtk-layer-shell gvfs gvfs-mtp htop jdk-openjdk luarocks lxappearance ly mpv mpd ncmpcpp mpc mate-polkit networkmanager-openvpn network-manager-applet nodejs npm obs-studio pacman-contrib pavucontrol picom playerctl pipewire pulseaudio python-pip qemu-full ripgrep thunar tree tmux ttf-hanazono virt-manager vlc wine-gecko wine-mono wine-staging xclip xfce4-notifyd xfce4-power-manager yt-dlp ly
 
 systemctl enable ly.service 
